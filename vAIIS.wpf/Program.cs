@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+#if !DEBUG
 using Serilog.Events;
+#endif
 
 namespace vAIIS.Wpf
 {
