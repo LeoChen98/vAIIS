@@ -27,7 +27,7 @@ jobs:
           
       - name: Replace Sentry DSN
         run: |
-          powershell -Command "(Get-Content vAIIS.Wpf\Program.cs) -replace '#SENTRY_DSN#', '${{ secrets.SENTRY_DSN }}' | Set-Content vAIIS.Wpf\Program.cs"
+          powershell -Command "(Get-Content vAIIS.Wpf\Program.cs) -replace '#SENTRY-DSN#', '${{ secrets.SENTRY_DSN }}' | Set-Content vAIIS.Wpf\Program.cs"
               
       - name: Restore dependencies
         run: dotnet restore
