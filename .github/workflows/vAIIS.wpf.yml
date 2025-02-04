@@ -28,10 +28,6 @@ jobs:
       - name: Replace Sentry DSN
         run: |
           powershell -Command "(Get-Content vAIIS.Wpf\Program.cs) -replace '#SENTRY_DSN#', '${{ secrets.SENTRY_DSN }}' | Set-Content vAIIS.Wpf\Program.cs"
-
-      - name: build publish exe
-        run: |
-          dotnet publish -p:PublishProfile=FolderProfile -c Release
               
       - name: Restore dependencies
         run: dotnet restore
