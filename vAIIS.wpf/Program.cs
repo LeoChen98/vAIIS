@@ -37,6 +37,14 @@ namespace vAIIS.Wpf
                     logging.ClearProviders();
                     Log.Logger = new LoggerConfiguration()
                         .WriteTo.File($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\vAIIS\\log\\log.log", rollingInterval: RollingInterval.Day)
+#if !DEBUG
+                        .WriteTo.Sentry(o =>
+                        {
+                            o.Dsn = new Dsn("#SENTRY-DSN#");
+                            o.MinimumBreadcrumbLevel = LogEventLevel.Information;
+                            o.MinimumEventLevel = LogEventLevel.Error;
+                        })
+#endif
                         .CreateLogger();
                     logging.AddSerilog();
                 });
