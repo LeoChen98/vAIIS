@@ -17,9 +17,10 @@ namespace vAIIS.Wpf
         {
             using var host = CreateHostBuilder(args).Build();
 
-            App.Current.MainWindow = host.Services.GetRequiredService<View.MainWindow>();
-            App.Current.MainWindow.Show();
-            App.Current.Run();
+            App app = new App();
+            app.MainWindow = host.Services.GetRequiredService<View.MainWindow>();
+            app.MainWindow.Show();
+            app.Run();
 
         }
 

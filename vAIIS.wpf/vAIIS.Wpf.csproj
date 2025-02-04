@@ -28,7 +28,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\SDK\vAIIS.SDK.Weather\vAIIS.SDK.Weather.csproj" />
-    <ProjectReference Include="..\vAIIS.SDK.Shared\vAIIS.SDK.Shared.csproj" />
+    <ProjectReference Include="..\SDK\vAIIS.SDK.Shared\vAIIS.SDK.Shared.csproj" />
   </ItemGroup>
 
 
