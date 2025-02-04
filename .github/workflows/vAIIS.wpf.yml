@@ -26,7 +26,8 @@ jobs:
           dotnet-version: 8.0.x
           
       - name: Replace Sentry DSN
-        run: sed -i 's/#SENTRY-DSN#/${{ secrets.SENTRY_DSN }}/g' vAIIS.Wpf/Program.cs
+        run: |
+          powershell -Command "(Get-Content vAIIS.Wpf\Program.cs) -replace '#SENTRY_DSN#', '${{ secrets.SENTRY_DSN }}' | Set-Content vAIIS.Wpf\Program.cs"
 
       - name: build publish exe
         run: |
