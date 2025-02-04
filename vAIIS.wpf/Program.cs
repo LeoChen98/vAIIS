@@ -45,7 +45,7 @@ namespace vAIIS.Wpf
         /// <summary>
         /// Configure Windows
         /// </summary>
-        /// <param name="services">IOC service collection</param>
+        /// <param name="container">IOC service collection</param>
         private static void ConfigureWindows(IServiceCollection container)
         {
             // MainWindow
@@ -55,7 +55,7 @@ namespace vAIIS.Wpf
         /// <summary>
         /// Configure ViewModels    
         /// </summary>
-        /// <param name="services">IOC service collection</param>
+        /// <param name="container">IOC service collection</param>
         private static void ConfigureViewModels(IServiceCollection container)
         {
             // MainViewModel    
