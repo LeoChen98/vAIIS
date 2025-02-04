@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vAIIS.SDK.Weather", "SDK\vA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{48F1F9F6-CBF1-4A75-ABC7-16F758C1651A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vAIIS.SDK.Shared", "vAIIS.SDK.Shared\vAIIS.SDK.Shared.csproj", "{37BAD7DD-859E-4277-839C-A92E60EBC11A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vAIIS.SDK.Shared", "SDK\vAIIS.SDK.Shared\vAIIS.SDK.Shared.csproj", "{37BAD7DD-859E-4277-839C-A92E60EBC11A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
