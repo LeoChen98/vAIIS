@@ -27,6 +27,7 @@ public class PluginManager
         if(_config.GetSection("Plugins").Exists() && _config.GetSection("Plugins").GetChildren().Any())
         {
             var plugins = _config.GetSection("Plugins").Get<Dictionary<string,IEnumerable<(string,IPluginInfo)>>>();
+            if (plugins == null) return;
             foreach (var plugin in plugins.Keys)
             {
                 foreach (var (path, _) in plugins[plugin])
@@ -45,7 +46,7 @@ public class PluginManager
     /// <returns><see langword="bool"/>, <see langword="true"/> means the plugin has loaded successfully, <see langword="false"/> means not.</returns>
     public bool LoadNewPlugin(string path, out string? errorInfo)
     {
-        bool rs = LoadNewPlugin(path, out errorInfo);
+        bool rs = LoadPlugin(path, out errorInfo);
         if (rs)
         {
             SavePluginList();
