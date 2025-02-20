@@ -124,7 +124,7 @@ public interface IWeatherProvider
     public void Unsubscribe(string icao);
 
     /// <summary>
-    /// Cancel all of the subscriptions
+    /// Cancel all the subscriptions
     /// </summary>
     public void UnsubscribeAll()
     {

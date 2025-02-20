@@ -13,28 +13,33 @@ namespace vAIIS.Wpf
         [STAThread]
         private static void Main(string[] args)
         {
-            using var host = CreateHostBuilder(args).Build();
+            using var host = CreateHostBuilder().Build();
 
-            App app = new App();
-            app.MainWindow = host.Services.GetRequiredService<View.MainWindow>();
+            App app = new App
+            {
+                MainWindow = host.Services.GetRequiredService<View.MainWindow>()
+            };
             app.MainWindow.Show();
             app.Run();
-
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args)
+        private static IHostBuilder CreateHostBuilder()
         {
-            return Host.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder()
                 .ConfigureServices(container =>
                 {
                     ConfigureWindows(container);
                     ConfigureViewModels(container);
+                    ConfigureFoundation(container);
                 })
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
                     Log.Logger = new LoggerConfiguration()
-                        .WriteTo.File($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\vAIIS\\log\\log.log", rollingInterval: RollingInterval.Day)
+                        .WriteTo.File(
+                            $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\vAIIS\\log\\log.log",
+                            rollingInterval: RollingInterval.Day,
+                            retainedFileCountLimit: 7)
 #if !DEBUG
                         .WriteTo.Sentry(o =>
                         {
@@ -48,6 +53,11 @@ namespace vAIIS.Wpf
                 });
         }
 
+        private static void ConfigureFoundation(IServiceCollection container)
+        {
+            container.AddSingleton<Foundation.PluginManager>();
+        }
+
         /// <summary>
         /// Configure Windows
         /// </summary>
@@ -55,9 +65,10 @@ namespace vAIIS.Wpf
         private static void ConfigureWindows(IServiceCollection container)
         {
             // MainWindow
-            container.AddSingleton<View.MainWindow>(sp => new View.MainWindow { DataContext = sp.GetRequiredService<ViewModel.MainViewModel>() });
-
+            container.AddSingleton<View.MainWindow>(sp => new View.MainWindow
+                { DataContext = sp.GetRequiredService<ViewModel.MainViewModel>() });
         }
+
         /// <summary>
         /// Configure ViewModels    
         /// </summary>
