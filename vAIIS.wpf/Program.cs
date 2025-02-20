@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using vAIIS.Wpf.Extension;
 #if !DEBUG
 using Serilog.Events;
 #endif
@@ -50,6 +52,12 @@ namespace vAIIS.Wpf
 #endif
                         .CreateLogger();
                     logging.AddSerilog();
+                })
+                .ConfigureAppConfiguration(config =>
+                {
+                    config.AddWritableJsonFile(
+                        $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\vAIIS\\config\\plugins.json",
+                        true); // plugin list.
                 });
         }
 

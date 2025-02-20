@@ -1,4 +1,6 @@
+using System.IO;
 using System.Runtime.Loader;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using vAIIS.SDK.Shared;
 
@@ -7,6 +9,7 @@ namespace vAIIS.Wpf.Foundation;
 public class PluginManager
 {
     private readonly ILogger _logger;
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// Provides a list of loaded plugins in the form of <see cref="IPluginInfo"/>.
@@ -15,9 +18,39 @@ public class PluginManager
 
     private readonly Dictionary<string, (IPluginInfo info, AssemblyLoadContext context, string path)> _pluginList = [];
 
-    public PluginManager(ILogger logger)
+    public PluginManager(ILogger logger, IConfiguration config)
     {
         _logger = logger;
+        _config = config;
+        
+        // Load plugins from config if exists
+        if(_config.GetSection("Plugins").Exists() && _config.GetSection("Plugins").GetChildren().Any())
+        {
+            var plugins = _config.GetSection("Plugins").Get<Dictionary<string,IEnumerable<(string,IPluginInfo)>>>();
+            foreach (var plugin in plugins.Keys)
+            {
+                foreach (var (path, _) in plugins[plugin])
+                {
+                    LoadPlugin(path, out _);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Load a new plugin from a file path
+    /// </summary>
+    /// <param name="path">A path contains one or more <see langword="class"/> inherit from <see cref="IPluginInfo"/></param>
+    /// <param name="errorInfo">Error information if loading failed</param>
+    /// <returns><see langword="bool"/>, <see langword="true"/> means the plugin has loaded successfully, <see langword="false"/> means not.</returns>
+    public bool LoadNewPlugin(string path, out string? errorInfo)
+    {
+        bool rs = LoadNewPlugin(path, out errorInfo);
+        if (rs)
+        {
+            SavePluginList();
+        }
+        return rs;
     }
 
     /// <summary>
@@ -105,5 +138,13 @@ public class PluginManager
             errorInfo = "Plugin not found";
             return null;
         }
+    }
+    
+    /// <summary>
+    /// Save plugin list to configuration
+    /// </summary>
+    private void SavePluginList()
+    {
+        _config.GetSection("Plugins").Bind(_pluginList.Values.Select(x => (x.path, x.info)).GroupBy(e => e.path));
     }
 }
